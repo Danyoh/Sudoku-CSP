@@ -10,8 +10,8 @@ class sudoku {
         int domain[81][8]; //9*9
         //int row[9][9];
         //int column[9][9];
-        std::vector<vector<int>> row;
-        std::vector<vector<int>> col;
+        vector<vector<int>> row;
+        vector<vector<int>> col;
         int box[9][9];
         int arcC[9][9];
 
@@ -23,21 +23,23 @@ class sudoku {
         int count=0, val=0;
         ifstream file("testing.txt");
         if (file.is_open()) { //this is to check if the file is open
-            std::vector<int> rowList;// = new std::vector<int>();
+            vector<int> rowList;// = new std::vector<int>();
             for (int i=0; i<9; i++) {
                 for (int j=0; j<9; j++) {
                     file >> variables[i][j];
-                    rowList.push_back(variables[i][j]);
+                    if (variables[i][j] !=0)
+                        rowList.push_back(variables[i][j]);
 
                 }
-            row.push_back(rowList);
-            rowList.clear();
+                row.push_back(rowList);
+                rowList.clear();
             }
         }
-        std::vector<int> colList;
+        vector<int> colList;
         for (int i=0; i<9; i++) {
             for (int j=0; j<9; j++) {
-                colList.push_back(variables[j][i]);
+                if (variables[j][i] !=0)
+                    colList.push_back(variables[j][i]);
             }
             col.push_back(colList);
             colList.clear();
@@ -50,12 +52,22 @@ class sudoku {
 
 int main(int argc, char const *argv[]) {
     sudoku s;
-    //for (int i=0; i<9; i++){
-     //   cout << s.row[2][i] << " ";
-    //}
-    //print the first row
+    //TESTING:
+    //print columns
+    cout<<"PRINT COLUMNS: \n";
     for (int i=0; i<9; i++){
-        cout << s.row[0][i] << " ";
+        for(int j=0;j<s.col[i].size();j++){
+            cout << s.col[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout<<"PRINT ROWS: \n";
+    //print rows
+    for (int i=0; i<9; i++){
+        for(int j=0;j<s.row[i].size();j++){
+            cout << s.row[i][j] << " ";
+        }
+        cout << endl;
     }
     cout << endl;
     return 0;
