@@ -1,4 +1,6 @@
-#include "sudoku.h"
+#include <iostream>
+#include <fstream>
+
 using namespace std;
 
 class sudoku {
@@ -15,8 +17,7 @@ class sudoku {
     }
 
     void initialState(){
-        int count=0;
-        int val=0;
+        int count=0, val=0;
         ifstream file;
         string fileName;
         cout << "Please input the puzzle text file name: " << endl;
@@ -25,9 +26,9 @@ class sudoku {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 file >> val;
+                variables[i][j] = val;
                 if (val != 0){
-                    variables[i][j] = val;
-                    row[i][j]=val;
+                    row[i][count]=val;
                     column[j][count++]=val;
                 }
             }
@@ -40,6 +41,10 @@ class sudoku {
 
 int main(int argc, char const *argv[]) {
     sudoku s;
-    
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            cout << s.variables[i][j] << endl;
+        }
+    }
     return 0;
 }
