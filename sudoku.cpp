@@ -3,11 +3,11 @@ using namespace std;
 
 class sudoku {
     public:
-        int domain[];
+        int domain[9*9];
 
-                sudoku(int* board) {
-                    int c = 1;
-                }
+    sudoku(int* board) {
+        int c = 1;
+    }
 
 };
 
