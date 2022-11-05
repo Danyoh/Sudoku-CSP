@@ -8,11 +8,9 @@ class sudoku {
     public:
         int variables[9][9];
         int domain[81][8]; //9*9
-        //int row[9][9];
-        //int column[9][9];
         vector<vector<int>> row;
         vector<vector<int>> col;
-        int box[9][9];
+        vector<vector<int>> box;
         int arcC[9][9];
 
     sudoku() {
@@ -38,12 +36,27 @@ class sudoku {
         vector<int> colList;
         for (int i=0; i<9; i++) {
             for (int j=0; j<9; j++) {
-                if (variables[j][i] !=0)
-                    colList.push_back(variables[j][i]);
+                if (variables[j][i] !=0) colList.push_back(variables[j][i]);
             }
             col.push_back(colList);
             colList.clear();
         }
+
+        vector<int> boxList;
+        for (int y=0;y<=6;y+=3){
+            for (int x=0;x<=6;x+=3){
+                for (int i=0; i<3;i++){
+                    for (int j=0;j<3;j++){
+                        if(variables[y+i][x+j] != 0) boxList.push_back(variables[y+i][x+j]);
+                    }
+                }
+                box.push_back(boxList);
+                boxList.clear();
+            }
+        }
+
+
+
         return;
     }
     
@@ -66,6 +79,16 @@ int main(int argc, char const *argv[]) {
     for (int i=0; i<9; i++){
         for(int j=0;j<s.row[i].size();j++){
             cout << s.row[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    cout<<"PRINT BOXES: \n";
+    //print boxes
+    for (int i=0; i<9; i++){
+        for(int j=0;j<s.box[i].size();j++){
+            cout << s.box[i][j] << " ";
         }
         cout << endl;
     }
