@@ -15,57 +15,54 @@ class sudoku {
 
     sudoku() {
         initialState();
+        setDomain();
     }
 
     void initialState(){
         int count=0, val=0;
         ifstream file("testing.txt");
-        if (file.is_open()) { //this is to check if the file is open
-            vector<int> rowList;// = new std::vector<int>();
+        // fill variables and rows matrix
+        if (file.is_open()) { 
+            vector<int> rowList;
             for (int i=0; i<9; i++) {
                 for (int j=0; j<9; j++) {
                     file >> variables[i][j];
-                    if (variables[i][j] !=0)
-                        rowList.push_back(variables[i][j]);
-
+                    if (variables[i][j] !=0) rowList.push_back(variables[i][j]);
                 }
                 row.push_back(rowList);
                 rowList.clear();
             }
         }
+        // fill columns matrix
         vector<int> colList;
         for (int i=0; i<9; i++) {
-            for (int j=0; j<9; j++) {
+            for (int j=0; j<9; j++)
                 if (variables[j][i] !=0) colList.push_back(variables[j][i]);
-            }
             col.push_back(colList);
             colList.clear();
         }
-
+        // fill boxes matrix
         vector<int> boxList;
         for (int y=0;y<=6;y+=3){
             for (int x=0;x<=6;x+=3){
                 for (int i=0; i<3;i++){
-                    for (int j=0;j<3;j++){
+                    for (int j=0;j<3;j++)
                         if(variables[y+i][x+j] != 0) boxList.push_back(variables[y+i][x+j]);
-                    }
                 }
                 box.push_back(boxList);
                 boxList.clear();
             }
         }
-
-
-
         return;
     }
     
+    void setDomain(){
+
+    }
 
 };
 
-int main(int argc, char const *argv[]) {
-    sudoku s;
-    //TESTING:
+void testing(sudoku s){
     //print columns
     cout<<"PRINT COLUMNS: \n";
     for (int i=0; i<9; i++){
@@ -93,5 +90,12 @@ int main(int argc, char const *argv[]) {
         cout << endl;
     }
     cout << endl;
+    return;
+}
+
+int main(int argc, char const *argv[]) {
+    sudoku s;
+    //TESTING:
+    testing(s);
     return 0;
 }
