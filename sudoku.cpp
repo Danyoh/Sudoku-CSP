@@ -22,7 +22,7 @@ class sudoku {
 
     void initialState(){
         int count=0, val=0;
-        ifstream file("testing.txt");
+        ifstream file("input.txt");
         // fill variables and rows matrix
         if (file.is_open()) { 
             vector<int> rowList;
@@ -57,12 +57,12 @@ class sudoku {
         }
         return;
     }
-    void setDomain(){
-        unordered_map<string,int> grid = {{"00",0},{"03",1},{"06",2},{"30",3},{"33",4},{"36",5},{"60",6},{"63",7},{"66",8}};
-        for (int i=0; i<9; i++) {
+    void setDomain(){ // set domain for each variable
+        unordered_map<string,int> grid = {{"00",0},{"03",1},{"06",2},{"30",3},{"33",4},{"36",5},{"60",6},{"63",7},{"66",8}}; // map for box number
+        for (int i=0; i<9; i++) { 
             for (int j=0; j<9; j++) {
-                if (variables[i][j] == 0){
-                    vector<int> temp = {1,2,3,4,5,6,7,8,9};     //define inital domain
+                if (variables[i][j] == 0){ // if variable is empty
+                    vector<int> temp = {1,2,3,4,5,6,7,8,9};      //define inital domain
                     //remove elements from the domain if they appear in the same row
                     for (int val: row[i]){
                         for (int k=0;k<temp.size();++k){
