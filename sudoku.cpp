@@ -1,13 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <unordered_map>
+#include <cmath>
 
 using namespace std;
 
 class sudoku {
     public:
         int variables[9][9];
-        int domain[81][8]; //9*9
+        unordered_map<string, vector<int>> domain;
         vector<vector<int>> row;
         vector<vector<int>> col;
         vector<vector<int>> box;
@@ -55,9 +57,48 @@ class sudoku {
         }
         return;
     }
-    
     void setDomain(){
-
+        unordered_map<string,int> grid = {{"00",0},{"03",1},{"06",2},{"30",3},{"33",4},{"36",5},{"60",6},{"63",7},{"66",8}};
+        for (int i=0; i<9; i++) {
+            for (int j=0; j<9; j++) {
+                if (variables[i][j] == 0){
+                    vector<int> temp = {1,2,3,4,5,6,7,8,9};     //define inital domain
+                    //remove elements from the domain if they appear in the same row
+                    for (int val: row[i]){
+                        for (int k=0;k<temp.size();++k){
+                            if (val == temp[k]) {
+                                temp.erase (temp.begin()+k);    //erase kth element from doamin
+                                break;
+                            }
+                        }
+                    }
+                    //remove elements in the same column
+                    for (int val: col[j]){
+                        for (int k=0;k<temp.size();++k){
+                            if (val == temp[k]) {
+                                temp.erase (temp.begin()+k);
+                                break;
+                            }
+                        }
+                    }
+                    //remove elements in the same box
+                    string index=to_string(int(floor(i/3)*3))+to_string(int(floor(j/3)*3));
+                    for (int val: box[grid[index]]){        // find correct box
+                        for (int k=0;k<temp.size();++k){
+                            if (val == temp[k]) {
+                                temp.erase (temp.begin()+k);
+                                break;
+                            }
+                        }
+                    }
+                    domain[to_string(i)+to_string(j)]=temp;
+                    temp.clear();
+                }else{
+                    domain[to_string(i)+to_string(j)]=vector<int>{variables[i][j]};
+                }
+            }
+        }
+        grid.clear();
     }
 
 };
@@ -90,6 +131,17 @@ void testing(sudoku s){
         cout << endl;
     }
     cout << endl;
+
+    cout<<"PRINT DOMAINS: \n";
+    for(auto x : s.domain){
+        cout << x.first << " ";
+        for (int val : x.second){
+            cout<< val << " ";
+        }
+        cout << endl;
+    }
+    cout << endl; 
+
     return;
 }
 
