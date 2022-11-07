@@ -10,14 +10,17 @@ class sudoku {
     public:
         int variables[9][9];
         unordered_map<string, vector<int>> domain;
+        vector<vector<vector<int>>> neighbours;
         vector<vector<int>> row;
         vector<vector<int>> col;
         vector<vector<int>> box;
-        int arcC[9][9];
 
     sudoku() {
         initialState();
         setDomain();
+        neighbours.push_back(row);
+        neighbours.push_back(col);
+        neighbours.push_back(box);
     }
 
     void initialState(){
