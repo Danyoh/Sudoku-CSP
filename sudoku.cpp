@@ -7,20 +7,27 @@
 using namespace std;
 
 class sudoku {
+    private:
+        unordered_map<string,int> grid = {{"00",0},{"03",1},{"06",2},{"30",3},{"33",4},{"36",5},{"60",6},{"63",7},{"66",8}}; // map for box number
+        vector<vector<string>> tempRows;
+        vector<vector<string>> tempCols;
+        vector<vector<string>> tempBoxes;
     public:
         int variables[9][9];
         unordered_map<string, vector<int>> domain;
-        vector<vector<vector<int>>> neighbours;
         vector<vector<int>> row;
         vector<vector<int>> col;
         vector<vector<int>> box;
+        unordered_map<string, vector<string>> neighbours;
 
     sudoku() {
         initialState();
         setDomain();
-        neighbours.push_back(row);
-        neighbours.push_back(col);
-        neighbours.push_back(box);
+        buildNeighbour();
+        grid.clear();
+        tempBoxes.clear();
+        tempRows.clear();
+        tempCols.clear();
     }
 
     void initialState(){
@@ -40,28 +47,42 @@ class sudoku {
         }
         // fill columns matrix
         vector<int> colList;
+        vector<string> colC;
+        vector<string> rowC;
         for (int i=0; i<9; i++) {
-            for (int j=0; j<9; j++)
+            for (int j=0; j<9; j++){
+                if (!(i==0 && j==0)) colC.push_back(to_string(j)+to_string(i));
+                rowC.push_back(to_string(i)+to_string(j));
                 if (variables[j][i] !=0) colList.push_back(variables[j][i]);
+            }
+            tempCols.push_back(colC);
+            tempRows.push_back(rowC);
             col.push_back(colList);
             colList.clear();
+            colC.clear();
+            rowC.clear();
         }
         // fill boxes matrix
         vector<int> boxList;
+        vector<string> boxC;
         for (int y=0;y<=6;y+=3){
             for (int x=0;x<=6;x+=3){
                 for (int i=0; i<3;i++){
-                    for (int j=0;j<3;j++)
+                    for (int j=0;j<3;j++){
+                        boxC.push_back(to_string(i+y)+to_string(j+x));
                         if(variables[y+i][x+j] != 0) boxList.push_back(variables[y+i][x+j]);
+
+                    }
                 }
+                tempBoxes.push_back(boxC);
                 box.push_back(boxList);
                 boxList.clear();
+                boxC.clear();
             }
         }
         return;
     }
     void setDomain(){ // set domain for each variable
-        unordered_map<string,int> grid = {{"00",0},{"03",1},{"06",2},{"30",3},{"33",4},{"36",5},{"60",6},{"63",7},{"66",8}}; // map for box number
         for (int i=0; i<9; i++) { 
             for (int j=0; j<9; j++) {
                 if (variables[i][j] == 0){ // if variable is empty
@@ -101,7 +122,29 @@ class sudoku {
                 }
             }
         }
-        grid.clear();
+    }
+    void buildNeighbour(){
+        for (int i=0;i<9;i++){
+            for (int j=0;j<9;j++){
+                for (string coords: tempRows[i]){
+                    neighbours[to_string(i)+to_string(j)].push_back(coords);
+                }
+                for(string coords: tempCols[j]){
+                    neighbours[to_string(i)+to_string(j)].push_back(coords);
+                }
+                for(string coords: tempBoxes[j]){
+                    bool flag=false;
+                    for (string x: neighbours[to_string(i)+to_string(j)]){
+                        if(coords.compare(x) == 0) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag) neighbours[to_string(i)+to_string(j)].push_back(coords);
+                }
+            }
+        }
+        
     }
 
 };
@@ -143,6 +186,15 @@ void testing(sudoku s){
         }
         cout << endl;
     }
+    cout << "PRINT NEIGHBOURS:\n";
+    for (auto x: s.neighbours){
+        cout << x.first << " ";
+        for (string val : x.second){
+            cout<< val << " ";
+        }
+        cout << endl;
+    }
+
     cout << endl; 
 
     return;
