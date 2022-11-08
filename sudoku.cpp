@@ -142,10 +142,11 @@ class sudoku {
         for (int i=0;i<9;i++){
             for (int j=0;j<9;j++){
                 for (string coords: tempRows[i]){   //push all coordinates from the same row of the coordinate "ij"
+                    if ((to_string(i)+to_string(j))==coords) continue;  //skip current coord
                     neighbours[to_string(i)+to_string(j)].push_back(coords);
                 }
                 for(string coords: tempCols[j]){    //push column
-                    if ((to_string(i)+to_string(j))==coords) continue;  //skip duplicate value from row 
+                    if ((to_string(i)+to_string(j))==coords) continue;  //skip current coord
                     neighbours[to_string(i)+to_string(j)].push_back(coords);
                 }
                 for(string coords: tempBoxes[j]){   //push box
