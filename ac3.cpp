@@ -5,6 +5,7 @@
 class ac3 {
     public:
     // make a queue of constraints 
+    unordered_map<string, int> assigned;
     ac3(){
 
     }
@@ -27,6 +28,8 @@ class ac3 {
         Backtrack to the last assignment and try the next value.
         We start with a partial assignment of values to variables.
         */
+
+        string var = unassignedVariable(s);
 
         return false;    
     }
@@ -58,6 +61,7 @@ class ac3 {
         return minVarCoord;
 
     }    
+
 
 
 };
