@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <sudoku.cpp>
 #include <vector>
 
@@ -68,9 +69,18 @@ class ac3 {
         if (s.domain[var].size() == 1) // if there is only one value in the domain, return it
             return s.domain[var];
 
+        vector<int> minDomain;
         // if there are more than one value in the domain, find the value with the fewest constraints
-        vector<int> minConstraints;
-        return minConstraints;
+        // sort the values in the domain of the variable by the number of constraints they have
+        // return the domain with the fewest constraints
+        // put all values in minDomain
+        for (int i = 0; i < s.domain[var].size(); i++) {
+            minDomain.push_back(s.domain[var][i]);
+        }
+        // sort the values in minDomain by the number of constraints they have
+        sort(minDomain.begin(), minDomain.end(), countConstraints(var, s));
+
+        return minDomain;
     }
     int countConstraints(string var, sudoku s) {
         /*
