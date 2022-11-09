@@ -2,7 +2,9 @@
 #include <vector>
 
 class ac3 {
-    public:
+private:
+        unordered_map<string, vector<string>> assignedValues;
+public:
         unordered_map<string, int> assignments;
     ac3(sudoku& s){
         setAssigned(s);
@@ -11,7 +13,7 @@ class ac3 {
     bool solve(){
         /*
         */
-       
+
        // make a queue of constraints 
 
         return true;
@@ -86,12 +88,25 @@ class ac3 {
     bool consistent(){
     }
 
-    void addAssigned(){
+    void addAssigned(sudoku s, string coord, int value){
+        assignments[coord]=value;
 
+        for (string neighbour: s.neighbours[coord]){
+            if (assignments.find(neighbour)==assignments.end()){
+                for (int i=0;i<s.domain[neighbour].size();i++){
+                    if (value == s.domain[neighbour][i]) {
+                        s.domain[neighbour].erase(s.domain[neighbour].begin()+i);
+                        vector<string> temp = {neighbour,coord};
+                        assignedValues[coord]=temp;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     void removeAssigned(){
-
+        
     }
 
     bool isSolved(){
