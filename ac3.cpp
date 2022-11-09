@@ -113,7 +113,16 @@ public:
         return;
     }
 
-    bool consistent() {
+    bool consistent(string coord, int value) {
+        bool consist = true;
+        for (auto x: assignments) {
+            if (assignments[x.first] == value) {
+                if (assignments.find(x.first)!=assignments.end()) {
+                    consist = false;
+                }
+            }
+        }
+        return consist;
     }
 
     void addAssigned(sudoku s, string coord, int value){
