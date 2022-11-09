@@ -33,7 +33,22 @@ public:
         We start with a partial assignment of values to variables.
         */
 
+        if (assignments.size() == 81)
+            return true;
+
         string var = unassignedVariable(s);
+        int value = assignments[var];
+        bool solved;
+        for (int x : minConstraints(var, s)) { // for each value in the ordered domain of var
+            if (consistent(s, var, x)) {
+                addAssigned(s, var, value);
+                solved = backtrack(s);
+
+                if (solved == true)
+                    return true;
+                removeAssigned(s, var);
+            }
+        }
 
         return false;    
     }
