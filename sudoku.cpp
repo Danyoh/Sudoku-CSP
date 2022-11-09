@@ -7,12 +7,12 @@
 using namespace std;
 
 class sudoku {
-    private:
+private:
         unordered_map<string,int> grid = {{"00",0},{"03",1},{"06",2},{"30",3},{"33",4},{"36",5},{"60",6},{"63",7},{"66",8}}; // map for box number
         vector<vector<string>> tempRows;
         vector<vector<string>> tempCols;
         vector<vector<string>> tempBoxes;
-    public:
+public:
         int variables[9][9];
         unordered_map<string, vector<int>> domain;
         vector<vector<int>> row;
