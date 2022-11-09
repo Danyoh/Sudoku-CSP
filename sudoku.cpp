@@ -19,6 +19,7 @@ public:
         vector<vector<int>> col;
         vector<vector<int>> box;
         unordered_map<string, vector<string>> neighbours;
+        vector<vector<string>> constraints;
 
     sudoku() {
         initialState();
@@ -164,25 +165,28 @@ public:
     }
         
     void constraints(){
-        vector<int> a;
-        vector<string> b;
+        vector<vector<string>> perms;
+        vector<string> temp;
         for (auto x: neighbours) {
-            a.push_back(int(x.second));
-        }
-        sort(a.begin(), a.end());
-        for (int i = 0; i < a.size(); i++) {
-            b.push_back(to_string(a[i]));
-        }
-        a.clear();
-        vector<vector<int>> pair;
-        int i = 0;
-        do {
-            pair[i++] = {a, n};
-        } while (next_permutation(a.begin(), a.end()));
-        for (int i = 0; i < len(pair); i++) {
-            if (pair[0], pair[1] not in self.constraints) {
-                self.constraints.append(pair[0], pair[1]);
+            int size = sizeof(x.second) / sizeof("00");
+            for(int i=0;i<x.second.size();i++){
+                permu(x.second.size(),x.second, size, temp);
+                perms.push_back(temp);
+                temp.clear();
             }
+            for (vector<string> pair: perms){
+                if(find(constraints.begin(), constraints.end(), pair) == constraints.end()){
+                    constraints.push_back(pair);
+                }
+            }
+        }
+        
+    }
+
+    void permu(int n,vector<string> coords,int size, vector<string> temp){
+        for (int i = 0; i < 2; i++) {
+            temp.push_back(coords[n % size]);
+            n /= size;
         }
     }
     
