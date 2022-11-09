@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <fstream>
 #include <vector>
 #include <unordered_map>
@@ -25,6 +26,7 @@ public:
         initialState();
         setDomain();
         buildNeighbour();
+        setConstraints();
         grid.clear();
         tempBoxes.clear();
         tempRows.clear();
@@ -164,7 +166,7 @@ public:
         }
     }
         
-    void constraints(){
+    void setConstraints(){
         vector<vector<string>> perms;
         vector<string> temp;
         for (auto x: neighbours) {
@@ -180,10 +182,10 @@ public:
                 }
             }
         }
-        
+        perms.clear();
     }
 
-    void permu(int n,vector<string> coords,int size, vector<string> temp){
+    void permu(int n,vector<string> coords,int size, vector<string>& temp){
         for (int i = 0; i < 2; i++) {
             temp.push_back(coords[n % size]);
             n /= size;
@@ -244,6 +246,14 @@ void testing(sudoku s){
         cout << x.first << " ";
         for (string val : x.second){
             cout<< val << " ";
+        }
+        cout << endl;
+    }
+
+    cout << "PRINT PERMS:\n";
+    for (auto x: s.constraints){
+        for (string coord : x){
+            cout<< coord << " ";
         }
         cout << endl;
     }
