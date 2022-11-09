@@ -161,6 +161,7 @@ public:
                 }
             }
         }
+    }
         
     void constraints(){
         vector<int> a;
@@ -184,7 +185,7 @@ public:
             }
         }
     }
-    }
+    
 
 };
 
