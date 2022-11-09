@@ -46,9 +46,20 @@ public:
 
     bool revise(sudoku s, string x1, string x2)
     {
-        
-
-        return true;
+        bool revised = false;
+        for (int i=0;i<s.domain[x1].size();i++){
+            for (int y: s.domain[x2]){
+                if (s.domain[x1][i]!=y){
+                    revised = false;
+                }else{
+                    revised = true;
+                    break;
+                }
+            }
+            if (revised)
+                s.domain[x1].erase(s.domain[x1].begin()+i);
+        }
+        return revised;
     }
     string unassignedVariable(sudoku s)
     {
