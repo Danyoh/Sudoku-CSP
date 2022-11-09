@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <sudoku.cpp>
 #include <vector>
 
@@ -60,8 +61,39 @@ class ac3 {
                 minVarCoord=pickedVariable[i];
         }
         return minVarCoord;
+    }
+    vector<int> minConstraints(string var, sudoku s) {
+        /*
+        Chose the coordinate of the value with the fewest constraints.
+        */
+        if (s.domain[var].size() == 1) // if there is only one value in the domain, return it
+            return s.domain[var];
 
-    }    
+        vector<int> minDomain;
+        // if there are more than one value in the domain, find the value with the fewest constraints
+        // sort the values in the domain of the variable by the number of constraints they have
+        // return the domain with the fewest constraints
+        // put all values in minDomain
+        for (int i = 0; i < s.domain[var].size(); i++) {
+            minDomain.push_back(s.domain[var][i]);
+        }
+        // sort the values in minDomain by the number of constraints they have
+        sort(minDomain.begin(), minDomain.end(), countConstraints(var, s));
+
+        return minDomain;
+    }
+    int countConstraints(string var, sudoku s) {
+        /*
+        Count the number of constraints for a given value.
+        */
+        int count = 0;
+        // s.neighbours[var] is a vector of strings representing the coordinates of the neighbours of var
+        for (string neighbour : s.neighbours[var]) {
+            if (s.domain[neighbour].size() > 1 && s.domain.find(var) != s.domain.end()) // if the neighbour has more than one value in its domain, it is a constraint
+                count++;
+        }
+        return count;
+    }
 
     void setAssigned(sudoku s){
         /*
@@ -79,11 +111,7 @@ class ac3 {
         return;
     }
 
-    int countConstraints(){
-
-    }
-
-    bool consistent(){
+    bool consistent() {
     }
 
     void addAssigned(){
