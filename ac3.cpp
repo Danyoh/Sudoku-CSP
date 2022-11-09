@@ -146,10 +146,14 @@ public:
         
     }
 
-    bool isSolved(){
-
-
+    bool isSolved(sudoku s) {
+        // go through the domain and see if the domain at that value is empty
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (s.domain[to_string(i) + to_string(j)].size() == 0)
+                    return false;
+            }
+        }
+        return true;
     }
-
-
 };
