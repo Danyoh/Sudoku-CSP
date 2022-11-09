@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "sudoku.cpp"
 #include <vector>
+#include <queue>
 
 class ac3
 {
@@ -12,22 +13,40 @@ public:
     ac3(sudoku &s)
     {
         setAssigned(s);
-
+        solve(s);
     }
 
-    bool solve()
+    bool solve(sudoku s)
     {
         /*
-         */
 
-        // make a queue of constraints
+        */
+        queue<vector<string>> arcQ;
+        for (vector<string> e : s.constraints)
+            arcQ.push(e); // fill arcQ
+        vector<string> arc;
+        while (!arcQ.empty()){
+            arc = arcQ.front();
+            arcQ.pop();
+            if (revise(s,arc[0],arc[1])){
+                if (s.domain[arc[0]].size()==0) //if domain is empty
+                    return false;
+                for (auto neighbour: s.neighbours[arc[0]]){
+                    if (neighbour != arc[1]){
+                        vector<string>temp {arc[0],neighbour};
+                        arcQ.push(temp);
+                        temp.clear();
+                    }
+                }
+            }
+        }
 
         return true;
     }
 
-    bool revise()
+    bool revise(sudoku s, string x1, string x2)
     {
-        // use in solve
+        
 
         return true;
     }
@@ -81,7 +100,8 @@ public:
         bool solved;
         for (int x : minConstraints(var, s))
         { // for each value in the ordered domain of var
-            if (consistent(s, var, x)) {
+            if (consistent(s, var, x))
+            {
                 addAssigned(s, var, x);
                 solved = backtrack(s);
 
@@ -312,7 +332,8 @@ void testing(sudoku s)
     return;
 }
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char const *argv[])
+{
     sudoku s;
     // TESTING:
     // testing(s);
@@ -320,8 +341,10 @@ int main(int argc, char const *argv[]) {
     cout << (solver.backtrack(s)) << endl;
 
     // print puzzle from assignments
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
             cout << solver.assignments[to_string(i) + to_string(j)] << " ";
         }
         cout << endl;
