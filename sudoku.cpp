@@ -162,9 +162,40 @@ class sudoku {
             }
         }
         
+    void constraints(){
+        vector<int> a;
+        vector<string> b;
+        for (auto x: neighbours) {
+            a.push_back(int(x.second));
+        }
+        sort(a.begin(), a.end());
+        for (int i = 0; i < a.size(); i++) {
+            b.push_back(to_string(a[i]));
+        }
+        a.clear();
+        vector<vector<int>> pair;
+        int i = 0;
+        do {
+            pair[i++] = {a, n};
+        } while (next_permutation(a.begin(), a.end()));
+        for (int i = 0; i < len(pair); i++) {
+            if (pair[0], pair[1] not in self.constraints) {
+                self.constraints.append(pair[0], pair[1]);
+            }
+        }
+    }
     }
 
 };
+
+bool myCmp(string s1, string s2){
+    if (s1.size() == s2.size()) {
+        return s1 < s2;
+    }
+    else {
+        return s1.size() < s2.size();
+    }
+}
 
 void testing(sudoku s){
     //print columns
