@@ -113,13 +113,13 @@ public:
         return;
     }
 
-    bool consistent(string coord, int value) {
+    bool consistent(sudoku s, string coord, int value) {
         bool consist = true;
         for (auto x: assignments) {
-            if (assignments[x.first] == value) {
-                if (assignments.find(x.first)!=assignments.end()) {
+            if (x.second == value) {
+                //check if key in neighbours of coord
+                if (find(s.neighbours[coord].begin(), s.neighbours[coord].end(), x.first) != s.neighbours[coord].end()) 
                     consist = false;
-                }
             }
         }
         return consist;
