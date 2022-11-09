@@ -4,7 +4,7 @@
 
 class ac3 {
 private:
-        unordered_map<string, vector<string>> assignedValues;
+        unordered_map<string, vector<vector<string>>> assignedValues;
 public:
         unordered_map<string, int> assignments;
     ac3(sudoku& s){
@@ -117,15 +117,19 @@ public:
     }
 
     void addAssigned(sudoku s, string coord, int value){
+        /*
+        add value to assignments at index coord, update domains of the
+        neighbours of coord
+        */
         assignments[coord]=value;
-
+        //update domains of neighbours
         for (string neighbour: s.neighbours[coord]){
             if (assignments.find(neighbour)==assignments.end()){
                 for (int i=0;i<s.domain[neighbour].size();i++){
                     if (value == s.domain[neighbour][i]) {
                         s.domain[neighbour].erase(s.domain[neighbour].begin()+i);
-                        vector<string> temp = {neighbour,coord};
-                        assignedValues[coord]=temp;
+                        vector<string> temp = {neighbour,to_string(value)};
+                        assignedValues[coord].push_back(temp);
                         break;
                     }
                 }
@@ -133,8 +137,17 @@ public:
         }
     }
 
-    void removeAssigned(){
-        
+    void removeAssigned(sudoku s, string coord){
+        /*
+        unassign a previously assigned value (check assignedValues)
+        */
+        if (assignments.find(coord)!=assignments.end()){
+            for (vector<string> x: assignedValues[coord]){
+                s.domain[x[0]].push_back(stoi(x[1]));
+            }
+            assignedValues[coord].clear();
+            assignments.erase(coord);
+        }
     }
 
     bool isSolved(){
