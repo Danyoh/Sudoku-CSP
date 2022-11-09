@@ -13,7 +13,8 @@ public:
     ac3(sudoku &s)
     {
         setAssigned(s);
-        solve(s);
+        cout << solve(s) << endl;
+        setAssigned(s);
     }
 
     bool solve(sudoku s)
@@ -25,15 +26,19 @@ public:
         for (vector<string> e : s.constraints)
             arcQ.push(e); // fill arcQ
         vector<string> arc;
-        while (!arcQ.empty()){
+        while (!arcQ.empty())
+        {
             arc = arcQ.front();
             arcQ.pop();
-            if (revise(s,arc[0],arc[1])){
-                if (s.domain[arc[0]].size()==0) //if domain is empty
+            if (revise(s, arc[0], arc[1]))
+            {
+                if (s.domain[arc[0]].size() == 0) // if domain is empty
                     return false;
-                for (auto neighbour: s.neighbours[arc[0]]){
-                    if (neighbour != arc[1]){
-                        vector<string>temp {arc[0],neighbour};
+                for (auto neighbour : s.neighbours[arc[0]])
+                {
+                    if (neighbour != arc[1])
+                    {
+                        vector<string> temp{arc[0], neighbour};
                         arcQ.push(temp);
                         temp.clear();
                     }
@@ -47,17 +52,22 @@ public:
     bool revise(sudoku s, string x1, string x2)
     {
         bool revised = false;
-        for (int i=0;i<s.domain[x1].size();i++){
-            for (int y: s.domain[x2]){
-                if (s.domain[x1][i]!=y){
+        for (int i = 0; i < s.domain[x1].size(); i++)
+        {
+            for (int y : s.domain[x2])
+            {
+                if (s.domain[x1][i] != y)
+                {
                     revised = false;
-                }else{
+                }
+                else
+                {
                     revised = true;
                     break;
                 }
             }
             if (revised)
-                s.domain[x1].erase(s.domain[x1].begin()+i);
+                s.domain[x1].erase(s.domain[x1].begin() + i);
         }
         return revised;
     }
@@ -349,9 +359,11 @@ int main(int argc, char const *argv[])
     // TESTING:
     // testing(s);
     ac3 solver(s);
-    cout << (solver.backtrack(s)) << endl;
+
+    // cout << (solver.backtrack(s)) << endl;
 
     // print puzzle from assignments
+
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < 9; j++)
