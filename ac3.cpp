@@ -57,7 +57,7 @@ public:
         string minVarCoord = pickedVariable[0];
         for (int i = 1; i < pickedVariable.size(); i++)
         {
-            if (s.domain[pickedVariable[i]].size() < minVarCoord.size())
+            if (s.domain[pickedVariable[i]].size() < s.domain[minVarCoord].size())
                 minVarCoord = pickedVariable[i];
         }
         return minVarCoord;
@@ -76,19 +76,19 @@ public:
             return true;
 
         string var = unassignedVariable(s);
-        int value = assignments[var];
+        // convert var into i and j
+        cout << "var: " << var << endl;
         bool solved;
         for (int x : minConstraints(var, s))
         { // for each value in the ordered domain of var
-            if (consistent(s, var, x))
-            {
-                addAssigned(s, var, value);
+            if (consistent(s, var, x)) {
+                addAssigned(s, var, x);
                 solved = backtrack(s);
 
                 if (solved == true)
                     return true;
-                removeAssigned(s, var);
             }
+            removeAssigned(s, var);
         }
 
         return false;
@@ -312,13 +312,20 @@ void testing(sudoku s)
     return;
 }
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]) {
     sudoku s;
     // TESTING:
-    //testing(s);
+    // testing(s);
     ac3 solver(s);
     cout << (solver.backtrack(s)) << endl;
-    
+
+    // print puzzle from assignments
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            cout << solver.assignments[to_string(i) + to_string(j)] << " ";
+        }
+        cout << endl;
+    }
+
     return 0;
 }
