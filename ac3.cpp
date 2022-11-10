@@ -13,14 +13,14 @@ public:
     ac3(sudoku &s)
     {
         setAssigned(s);
-        cout << solve(s) <<endl;
+        cout << "AC3 solve? = " << solve(s) <<endl;
         setAssigned(s);
     }
 
     bool solve(sudoku& s)
     {
         /*
-
+        AC3 SOLVE
         */
         queue<vector<string>> arcQ;
         for (vector<string> e : s.constraints)
@@ -28,7 +28,6 @@ public:
         vector<string> arc;
         while (!arcQ.empty())
         {
-            cout << arcQ.size() << endl;    //TESTING
             arc = arcQ.front();             //pop an arbitrary arc (Xi,Xj)
             arcQ.pop(); 
             if (revise(s, arc[0], arc[1]))  //make Xi arc-consistent w.r.t Xj
@@ -359,11 +358,10 @@ int main(int argc, char const *argv[])
 {
     sudoku s;
     // TESTING:
-    testing(s);
+    //testing(s);
     ac3 solver(s);
-    cout << solver.backtrack(s) << endl;
-    cout << "done" << endl;
-    // cout << (solver.backtrack(s)) << endl;
+    cout << "Backtrack solve? = " << solver.backtrack(s) << endl;
+    cout << "Finished:" << endl;
 
     // print puzzle from assignments
 
