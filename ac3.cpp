@@ -28,6 +28,7 @@ public:
         vector<string> arc;
         while (!arcQ.empty())
         {
+            cout<<arcQ.size() <<endl;
             arc = arcQ.front();             //pop an arbitrary arc (Xi,Xj)
             arcQ.pop(); 
             if (revise(s, arc[0], arc[1]))  //make Xi arc-consistent w.r.t Xj
@@ -359,6 +360,7 @@ int main(int argc, char const *argv[])
     sudoku s;
     // TESTING:
     //testing(s);
+    cout << "ArcQ size:" << endl;
     ac3 solver(s);
     cout << "Backtrack solve? = " << solver.backtrack(s) << endl;
     cout << "Finished:" << endl;
