@@ -242,6 +242,20 @@ public:
         }
         return true;
     }
+
+    bool checkSolve(sudoku &s) {
+        int count = 0;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                for (auto x : s.neighbours[to_string(i) + to_string(j)]) {
+                    if ((to_string(i) + to_string(j)) == x) count++;
+                }
+                if (count > 3) return false;
+                count = 0;
+            }
+        }
+        return true;
+    }
 };
 
 void testing(sudoku s) {
@@ -321,5 +335,6 @@ int main(int argc, char const *argv[]) {
         cout << endl;
     }
 
+    cout << solver.checkSolve(s) << " = solved?";
     return 0;
 }
